@@ -1,15 +1,20 @@
+import { getApplications } from './../services/api';
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
+
+
+
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 600,
-    height: 400,
+    width: 900,
+    height: 670,
     show: false,
     autoHideMenuBar: true,
+    // titleBarStyle: 'hidden',
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -59,6 +64,11 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+})
+
+
+ipcMain.handle('get-applications', async () => {
+  return await getApplications()
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
