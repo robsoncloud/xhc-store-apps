@@ -3,26 +3,11 @@
 import { MoreVerticalIcon } from "lucide-react"
 import { Badge } from "./ui/badge"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
-import { Table, TableCaption, TableHeader, TableRow, TableHead, TableBody, TableCell } from "./ui/table"
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "./ui/table"
 import { Button } from "./ui/button"
-
-
-interface App {
-    Name: string
-    DisplayName: string
-    Icon: string
-    SearchPattern: string
-    Versions: {
-        [key: string]: {
-            UnInstallArgs: string
-            Version: string
-            MD5Hash: string
-            PostInstallation: boolean
-            ProductCode: string
-        }
-    }
-}
-
+import Modal from "./Modal"
+import { useState } from "react"
+import { App } from "src/common/app.model"
 
 
 interface TableAppsProps {
@@ -30,7 +15,16 @@ interface TableAppsProps {
 }
 
 const TableApps = ({ apps }: TableAppsProps) => {
-    return (
+    const [openModal, toggleModal] = useState(false)
+    const [selectedApp, setSelectedApp] = useState<App | undefined>(undefined)
+
+    function renderModal() {
+        if(!openModal) return null
+
+        return <Modal clickClose={() => {toggleModal(false) }} clickInstall={() => {toggleModal(false) }} app={selectedApp} />
+    }
+    return (<>
+        {renderModal()}
         <Table className="relative">
             <TableHeader className="sticky top-0">
                 <TableRow>
@@ -70,10 +64,10 @@ const TableApps = ({ apps }: TableAppsProps) => {
                         </DropdownMenu>
                     </TableCell>
                 </TableRow>
-                {apps &&apps.map(app => (
-                    <TableRow>
+                {apps && apps.map(app => (
+                    <TableRow key={app.Name}>
                         <TableCell>
-                            <div className="font-medium">{app.DisplayName ? app.DisplayName : app.Name }</div>
+                            <div className="font-medium">{app.DisplayName ? app.DisplayName : app.Name}</div>
                             <div className="hidden text-sm text-muted-foreground md:inline">Image Editing</div>
                         </TableCell>
                         <TableCell className="hidden sm:table-cell">{app.Versions[0].Version}</TableCell>
@@ -92,6 +86,9 @@ const TableApps = ({ apps }: TableAppsProps) => {
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
+                                    <DropdownMenuItem asChild>
+                                        <span className="cursor-pointer" onClick={() => {toggleModal(true); setSelectedApp(app) }}>Install</span>
+                                    </DropdownMenuItem>
                                     <DropdownMenuItem>View Details</DropdownMenuItem>
                                     <DropdownMenuItem>Update</DropdownMenuItem>
                                     <DropdownMenuItem>Uninstall</DropdownMenuItem>
@@ -103,6 +100,7 @@ const TableApps = ({ apps }: TableAppsProps) => {
 
             </TableBody>
         </Table>
+    </>
     )
 }
 

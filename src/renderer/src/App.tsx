@@ -16,6 +16,7 @@ import { DownloadIcon, PlusIcon } from "@radix-ui/react-icons"
 import { FilterIcon, ListOrderedIcon } from "lucide-react"
 import { Input } from "./components/ui/input"
 import TableApps from "./components/TableApps"
+import Modal from "./components/Modal"
 
 function App(): JSX.Element {
 
@@ -30,7 +31,7 @@ function App(): JSX.Element {
       try {
         const resp = await window.api.getApplications()
         setApps(resp.Applications)
-        
+
       } catch (err) {
         setError("Error fetching data from server")
       } finally {
@@ -54,15 +55,13 @@ function App(): JSX.Element {
   if (error) { return <div>{error}</div> }
   return (
 
-
     <div className="h-screen w-screen bg-background flex flex-row relative">
+
       <Navigation />
       <main className="flex flex-col p-10 ml-20 w-full gap-5">
+
         <div className="flex">
-
-
           <h1 className="text-2xl font-medium">App Store</h1>
-
           <div className="relative ml-auto flex-1 md:grow-0">
             <div className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
@@ -72,7 +71,6 @@ function App(): JSX.Element {
             />
           </div>
         </div>
-
 
         <Tabs defaultValue="all" className="overflow-hidden">
           <div className="flex items-center">
