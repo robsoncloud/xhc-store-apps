@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
@@ -12,10 +11,9 @@ import { useEffect, useState } from "react"
 
 import Navigation from "./components/Navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs"
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./components/ui/dropdown-menu"
 import { DownloadIcon, PlusIcon } from "@radix-ui/react-icons"
-import { Badge } from "./components/ui/badge"
-import { FilterIcon, ListOrderedIcon, MoreVerticalIcon } from "lucide-react"
+import { FilterIcon, ListOrderedIcon } from "lucide-react"
 import { Input } from "./components/ui/input"
 import TableApps from "./components/TableApps"
 
@@ -32,22 +30,31 @@ function App(): JSX.Element {
       try {
         const resp = await window.api.getApplications()
         setApps(resp.Applications)
-        console.log(resp)
+        
       } catch (err) {
-        setError("Error fetching data from server",err)
+        setError("Error fetching data from server")
       } finally {
         setLoading(false)
       }
     }
     fetchApps()
 
+    window.api.onPipeMessage((message) => {
+      console.log(message)
+    })
+
+    window.api.onUpdateText((text) => {
+      console.log(text)
+    })
+
+
   }, [])
 
-  if(loading) { return <div>Loading...</div> }
-  if(error) { return <div>{error}</div> }
+  if (loading) { return <div>Loading...</div> }
+  if (error) { return <div>{error}</div> }
   return (
 
-    
+
     <div className="h-screen w-screen bg-background flex flex-row relative">
       <Navigation />
       <main className="flex flex-col p-10 ml-20 w-full gap-5">
@@ -126,7 +133,7 @@ function App(): JSX.Element {
                 <CardDescription>Manage your installed applications.</CardDescription>
               </CardHeader>
               <CardContent>
-                <TableApps apps={apps}/>
+                <TableApps apps={apps} />
               </CardContent>
             </Card>
           </TabsContent>
