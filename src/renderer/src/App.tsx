@@ -58,7 +58,7 @@ function App(): JSX.Element {
     <div className="h-screen w-screen bg-background flex flex-row relative">
 
       <Navigation />
-      <main className="flex flex-col p-10 ml-20 w-full gap-5">
+      <main className="flex flex-col p-10 ml-20 w-full gap-5 h-screen ">
 
         <div className="flex">
           <h1 className="text-2xl font-medium">App Store</h1>
@@ -72,7 +72,7 @@ function App(): JSX.Element {
           </div>
         </div>
 
-        <Tabs defaultValue="all" className="overflow-hidden">
+        <Tabs defaultValue="all" className="flex flex-col flex-grow overflow-hidden">
           <div className="flex items-center">
             <TabsList>
               <TabsTrigger value="all">All</TabsTrigger>
@@ -124,8 +124,8 @@ function App(): JSX.Element {
               </Button>
             </div>
           </div>
-          <TabsContent value="all" className="h-full ">
-            <Card x-chunk="dashboard-06-chunk-0" className="w-full h-full overflow-x-auto" >
+          <TabsContent value="all" className="flex flex-col flex-grow overflow-auto">
+          <Card className="flex-grow">
               <CardHeader>
                 <CardTitle>Applications</CardTitle>
                 <CardDescription>Manage your installed applications.</CardDescription>

@@ -25,7 +25,7 @@ const TableApps = ({ apps }: TableAppsProps) => {
     }
     return (<>
         {renderModal()}
-        <Table className="relative">
+        <Table className="relative ">
             <TableHeader className="sticky top-0">
                 <TableRow>
                     <TableHead>Name</TableHead>
